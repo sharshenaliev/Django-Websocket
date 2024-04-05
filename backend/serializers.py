@@ -11,7 +11,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    key = serializers.CharField(max_length=40, read_only=True)
+    key = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -21,8 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create(**validated_data)
         user.set_password(validated_data['password'])
         user.save()
-        token, created = Token.objects.get_or_create(user=user)
-        return user.union(token)
+        return user
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
@@ -33,6 +32,9 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def get_key(self, instance):
+        token, created = Token.objects.get_or_create(user=instance)
+        return token.key
 
 class NotificationSerializer(serializers.ModelSerializer):
 

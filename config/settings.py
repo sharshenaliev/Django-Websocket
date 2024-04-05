@@ -10,7 +10,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://websocket-1-7x18.onrender.com", ]
 
 INSTALLED_APPS = [
     'jazzmin',
